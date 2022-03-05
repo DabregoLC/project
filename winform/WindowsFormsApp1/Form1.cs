@@ -28,8 +28,30 @@ namespace WindowsFormsApp1
 
         public void appendOperand(string s1)
         {
+
             if (gWhichOpHasFocus == (int)OpFocus.OPERAND1)
             {
+
+                // prevent more than 8 bits for hex or 32 bits for bin
+                if (rdoHex.Checked)
+                {
+                    if (txtOperand1.Text.Length == fpOperations.Standard754FPNumber.HEX_LENGTH32)
+                    {
+                        Debug.WriteLine("stop append op1 hex length is " + txtOperand1.Text.Length);
+                        return;
+                    }
+                }
+                if (rdoBin.Checked)
+                {
+                    if (txtOperand1.Text.Length == fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 +
+                            fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 +
+                            fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
+                    {
+                        Debug.WriteLine("stop append op2 bin length is " + txtOperand1.Text.Length);
+                        return;
+                    }
+                }
+
                 if (s1 == "." && txtOperand1.Text.Contains("."))  // only allow one "."
                 { s1 = ""; }
 
@@ -48,6 +70,26 @@ namespace WindowsFormsApp1
             }
             else if (gWhichOpHasFocus == (int)OpFocus.OPERAND2)
             {
+                // prevent more than 8 bits for hex or 32 bits for bin
+                if (rdoHex.Checked)
+                {
+                    if (txtOperand2.Text.Length == fpOperations.Standard754FPNumber.HEX_LENGTH32)
+                    {
+                        Debug.WriteLine("stop append op2 hex length is " + txtOperand2.Text.Length);
+                        return;
+                    }
+                }
+                if (rdoBin.Checked)
+                {
+                    if (txtOperand2.Text.Length == fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 +
+                            fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 +
+                            fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
+                    {
+                        Debug.WriteLine("stop append op2 bin length is " + txtOperand2.Text.Length);
+                        return;
+                    }
+                }
+
                 if (s1 == "." && txtOperand2.Text.Contains("."))
                 { s1 = ""; }
 
@@ -256,7 +298,7 @@ namespace WindowsFormsApp1
         }
 
         private void txtOperand1_TextChanged(object sender, EventArgs e)
-        {            
+        {
             string s1 = txtOperand1.Text;
             if (s1 != ".")  // if number string is just starting with "." it will break Decimal.Parse
             {
@@ -264,7 +306,7 @@ namespace WindowsFormsApp1
 
                 //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
-               
+
             }
             lblOp1Len.Text = txtOperand1.Text.Length.ToString();
         }
