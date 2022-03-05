@@ -71,6 +71,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lblOp1Len = new System.Windows.Forms.Label();
             this.lblOp2Len = new System.Windows.Forms.Label();
+            this.lblOp1Limit = new System.Windows.Forms.Label();
+            this.lblOp2Limit = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -526,11 +530,11 @@
             // txtAllResults
             // 
             this.txtAllResults.Font = new System.Drawing.Font("Courier New", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAllResults.Location = new System.Drawing.Point(768, 16);
+            this.txtAllResults.Location = new System.Drawing.Point(792, 16);
             this.txtAllResults.Multiline = true;
             this.txtAllResults.Name = "txtAllResults";
             this.txtAllResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAllResults.Size = new System.Drawing.Size(1080, 632);
+            this.txtAllResults.Size = new System.Drawing.Size(1056, 632);
             this.txtAllResults.TabIndex = 64;
             // 
             // label4
@@ -571,7 +575,7 @@
             this.lblOp1Len.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOp1Len.Location = new System.Drawing.Point(696, 80);
             this.lblOp1Len.Name = "lblOp1Len";
-            this.lblOp1Len.Size = new System.Drawing.Size(40, 44);
+            this.lblOp1Len.Size = new System.Drawing.Size(23, 25);
             this.lblOp1Len.TabIndex = 68;
             this.lblOp1Len.Text = "0";
             // 
@@ -581,9 +585,49 @@
             this.lblOp2Len.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOp2Len.Location = new System.Drawing.Point(696, 192);
             this.lblOp2Len.Name = "lblOp2Len";
-            this.lblOp2Len.Size = new System.Drawing.Size(40, 44);
+            this.lblOp2Len.Size = new System.Drawing.Size(23, 25);
             this.lblOp2Len.TabIndex = 69;
             this.lblOp2Len.Text = "0";
+            // 
+            // lblOp1Limit
+            // 
+            this.lblOp1Limit.AutoSize = true;
+            this.lblOp1Limit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOp1Limit.Location = new System.Drawing.Point(752, 80);
+            this.lblOp1Limit.Name = "lblOp1Limit";
+            this.lblOp1Limit.Size = new System.Drawing.Size(23, 25);
+            this.lblOp1Limit.TabIndex = 70;
+            this.lblOp1Limit.Text = "0";
+            // 
+            // lblOp2Limit
+            // 
+            this.lblOp2Limit.AutoSize = true;
+            this.lblOp2Limit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOp2Limit.Location = new System.Drawing.Point(752, 192);
+            this.lblOp2Limit.Name = "lblOp2Limit";
+            this.lblOp2Limit.Size = new System.Drawing.Size(23, 25);
+            this.lblOp2Limit.TabIndex = 71;
+            this.lblOp2Limit.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(728, 192);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(18, 25);
+            this.label6.TabIndex = 72;
+            this.label6.Text = "/";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(728, 80);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(18, 25);
+            this.label7.TabIndex = 73;
+            this.label7.Text = "/";
             // 
             // btnPosNeg
             // 
@@ -591,6 +635,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1880, 697);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lblOp2Limit);
+            this.Controls.Add(this.lblOp1Limit);
             this.Controls.Add(this.lblOp2Len);
             this.Controls.Add(this.lblOp1Len);
             this.Controls.Add(this.label5);
@@ -687,6 +735,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblOp1Len;
         private System.Windows.Forms.Label lblOp2Len;
+        private System.Windows.Forms.Label lblOp1Limit;
+        private System.Windows.Forms.Label lblOp2Limit;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }
 

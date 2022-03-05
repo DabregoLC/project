@@ -27,7 +27,7 @@ namespace WindowsFormsApp1
 
         public int gWhichOpHasFocus;
 
-        public void appendOperand(string s1)
+        public void appendOperand(string appendStr)
         {
 
             if (gWhichOpHasFocus == (int)OpFocus.OPERAND1)
@@ -53,20 +53,26 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                if (s1 == "." && txtOperand1.Text.Contains("."))  // only allow one "."
-                { s1 = ""; }
 
-                if (txtOperand1.Text == "0")
+
+                if (appendStr == "." && txtOperand1.Text.Contains("."))  // only allow one "."
+                { appendStr = ""; }
+              
+                else if ((txtOperand1.Text == "0") && (!rdoBin.Checked))
                 {
-                    if (s1 == ".")
+                    if (appendStr == ".")
                     {
-                        s1 = "0.";
+                        appendStr = "0.";
                     }
 
-                    txtOperand1.Text = s1;
+                    txtOperand1.Text = appendStr;
+                }
+                else if ((txtOperand1.Text == "0") && (rdoBin.Checked))
+                {
+                    txtOperand1.Text += appendStr;
                 }
                 else
-                    txtOperand1.Text += s1;
+                    txtOperand1.Text += appendStr;
 
             }
             else if (gWhichOpHasFocus == (int)OpFocus.OPERAND2)
@@ -91,24 +97,39 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                if (s1 == "." && txtOperand2.Text.Contains("."))
-                { s1 = ""; }
+                if (appendStr == "." && txtOperand2.Text.Contains("."))
+                { appendStr = ""; }
 
-                if (txtOperand2.Text == "0")
+                //if (txtOperand2.Text == "0")
+                //{
+                //    if (appendStr == ".")
+                //    {
+                //        appendStr = "0.";
+                //    }
+
+                //    txtOperand2.Text = appendStr;
+                //}
+                //else
+                //    txtOperand2.Text += appendStr;
+
+                else if ((txtOperand2.Text == "0") && (!rdoBin.Checked))
                 {
-                    if (s1 == ".")
+                    if (appendStr == ".")
                     {
-                        s1 = "0.";
+                        appendStr = "0.";
                     }
 
-                    txtOperand2.Text = s1;
+                    txtOperand2.Text = appendStr;
+                }
+                else if ((txtOperand2.Text == "0") && (rdoBin.Checked))
+                {
+                    txtOperand2.Text += appendStr;
                 }
                 else
-                    txtOperand2.Text += s1;
+                    txtOperand2.Text += appendStr;
 
             }
 
-            //lblOperation.Text = "";
             txtResult.Text = "";
             
         }
@@ -184,6 +205,18 @@ namespace WindowsFormsApp1
             btnDot.Enabled = true;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
+
+            lblOp1Len.Text = "";
+            lblOp1Len.Visible = false;
+            label6.Visible = false;
+            lblOp1Limit.Text = "";
+            lblOp1Limit.Visible = false;
+
+            lblOp2Len.Text = "";
+            lblOp2Len.Visible = false;
+            label7.Visible = false;
+            lblOp2Limit.Text = "";
+            lblOp2Limit.Visible = false;
         }
 
         private void rdoHex_CheckedChanged(object sender, EventArgs e)
@@ -212,6 +245,19 @@ namespace WindowsFormsApp1
             btnDot.Enabled = true;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
+
+            lblOp1Len.Text = "";
+            lblOp1Len.Visible = true;
+            label6.Visible = true;
+            lblOp1Limit.Text = "";
+            lblOp1Limit.Visible = true;
+
+            lblOp2Len.Text = "";
+            lblOp2Len.Visible = true;
+            label7.Visible = true;
+            lblOp2Limit.Text = "";
+            lblOp2Limit.Visible = true;
+
         }
 
         private void rdoBin_CheckedChanged(object sender, EventArgs e)
@@ -237,9 +283,22 @@ namespace WindowsFormsApp1
             btnD.Enabled = false;
             btnE.Enabled = false;
             btnF.Enabled = false;
-            btnDot.Enabled = true;
+            btnDot.Enabled = false;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
+            btnNeg.Enabled = false;
+
+            lblOp1Len.Text = "";
+            lblOp1Len.Visible = true;
+            label6.Visible = true;
+            lblOp1Limit.Text = "";
+            lblOp1Limit.Visible = true;
+
+            lblOp2Len.Text = "";
+            lblOp2Len.Visible = true;
+            label7.Visible = true;
+            lblOp2Limit.Text = "";
+            lblOp2Limit.Visible = true;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -310,7 +369,22 @@ namespace WindowsFormsApp1
 
 
             }
-            lblOp1Len.Text = txtOperand1.Text.Length.ToString();
+
+
+            if (rdoDec.Checked)
+            {
+
+            }
+            else if (rdoHex.Checked)
+            {
+                lblOp1Len.Text = txtOperand1.Text.Length.ToString();
+                lblOp1Limit.Text = fpOperations.Standard754FPNumber.HEX_LENGTH32.ToString();
+            }
+            else if (rdoBin.Checked)
+            {
+                lblOp1Len.Text = txtOperand1.Text.Length.ToString();
+                lblOp1Limit.Text = (fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32).ToString();
+            }
         }
 
         private void txtOperand2_TextChanged(object sender, EventArgs e)
@@ -323,7 +397,21 @@ namespace WindowsFormsApp1
                 //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
             }
-            lblOp2Len.Text = txtOperand2.Text.Length.ToString();
+
+            if (rdoDec.Checked)
+            {
+
+            }
+            else if (rdoHex.Checked)
+            {
+                lblOp2Len.Text = txtOperand2.Text.Length.ToString();
+                lblOp2Limit.Text = fpOperations.Standard754FPNumber.HEX_LENGTH32.ToString();
+            }
+            else if (rdoBin.Checked)
+            {
+                lblOp2Len.Text = txtOperand2.Text.Length.ToString();
+                lblOp2Limit.Text = (fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32).ToString();
+            }
         }
 
         private void txtOperand1_Enter(object sender, EventArgs e)
@@ -602,7 +690,7 @@ namespace WindowsFormsApp1
                 Debug.WriteLine(txtOperand1.Text.Length);
                 Debug.WriteLine(txtOperand2.Text.Length);
                 
-                // operand 1 length
+                // check hex operand 1 length
                 if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.HEX_LENGTH32)
                 {
                     errStr1 += "operand 1 hex input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
@@ -613,7 +701,7 @@ namespace WindowsFormsApp1
                     str1 = tempFl.ToString();
                 }
 
-                // operand 2 length
+                // check hex operand 2 length
                 if (txtOperand2.Text.Length != fpOperations.Standard754FPNumber.HEX_LENGTH32)
                 {
                     errStr1 += Environment.NewLine + "operand 2 hex input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand2.Text.Length; 
@@ -637,30 +725,58 @@ namespace WindowsFormsApp1
                 Debug.WriteLine("b:");
                 Debug.WriteLine(txtOperand1.Text.Length);
                 Debug.WriteLine(txtOperand2.Text.Length);
+
+                // check bin operand 1 length
                 if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 
                     + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 
                     + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
                 {
                     errStr1 += "operand 1 binary input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
                 }
- 
+                else
+                {
+                    //float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
+                    //str1 = tempFl.ToString();
 
+                    string signStr = txtOperand1.Text.Substring(0, 1);
+                    string expStr  = txtOperand1.Text.Substring(1, 8);
+                    string mantStr = txtOperand1.Text.Substring(9, 23);
+
+                    fpOperations.Standard754FPNumber fp = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
+                    str1 = fp.returnFloatVal().ToString();
+                }
+
+                // check bin operand 2 length
                 if (txtOperand2.Text.Length != fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32
                     + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32
                     + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
                 {
                     errStr1 += Environment.NewLine + "operand 2 binary input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand2.Text.Length;
                 }
+                else
+                {
+                    //float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
+                    //str1 = tempFl.ToString();
+
+                    string signStr = txtOperand1.Text.Substring(0, 1);
+                    string expStr = txtOperand1.Text.Substring(1, 8);
+                    string mantStr = txtOperand1.Text.Substring(9, 23);
+
+                    fpOperations.Standard754FPNumber fp = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
+                    str2 = fp.returnFloatVal().ToString();
+                }
 
                 if (errStr1.Length > 0)
                 {
                     txtAllResults.Text += errStr1;
+                    return;
                 }
             }
 
             //string s1 = txtOperand1.Text;
             //string s2 = txtOperand2.Text;
 
+            // str1, str2 need to be a decimal here, time constraints
             if ((str1 != ".") && (str2 != ".")) // if number string is just starting with "." it will break Decimal.Parse
             {
                 //decimal d1 = Decimal.Parse(str1);
@@ -675,27 +791,28 @@ namespace WindowsFormsApp1
 
                 txtAllResults.Text += "";
 
-                //fpn3 is initialized to a default
+                string operationStr = cbOperation.SelectedItem.ToString();
+
                 if (cbOperation.SelectedIndex == 2)  // 2
                 {
                     fpn3 = fpn1 + fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
                 }
                 else if (cbOperation.SelectedIndex == 1)  // 1
                 {
                     fpn3 = fpn1 - fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
                 }
                 else if (cbOperation.SelectedIndex == 0)  // 0
                 {
                     fpn3 = fpn1 * fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
                 }
             }
         }
