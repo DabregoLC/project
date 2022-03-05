@@ -67,8 +67,7 @@ namespace WindowsFormsApp1
 
             //lblOperation.Text = "";
             txtResult.Text = "";
-            txtResultBin.Text = "";
-            txtResultHex.Text = "";
+            
         }
         public btnPosNeg()
         {
@@ -100,9 +99,9 @@ namespace WindowsFormsApp1
             // this label prevents the form from resizing too small on initialization
             // the form initializes with the desired spacing due to the label
             // now hide the label here
-            label4.Visible = false;
 
-            lblOperation.Visible = false;
+            cbOperation.SelectedIndex = 0;
+            this.Text = "Floating Point Calculator";
         }
 
         private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
@@ -222,10 +221,8 @@ namespace WindowsFormsApp1
                     txtOperand2.Text = txtOperand2.Text.Remove(txtOperand2.Text.Length - 1, 1);
             }
 
-            lblOperation.Text = "";
             txtResult.Text = "";
-            txtResultBin.Text = "";
-            txtResultHex.Text = "";
+           
         }
 
         private void button28_Click(object sender, EventArgs e)
@@ -255,16 +252,7 @@ namespace WindowsFormsApp1
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
 
-            txtOp1Hex.Text = "0";
-            txtOp1Bin.Text = "0";
-
-            txtOp2Hex.Text = "0";
-            txtOp2Bin.Text = "0";
-
-            lblOperation.Text = "";
             txtResult.Text = "";
-            txtResultBin.Text = "";
-            txtResultHex.Text = "";
         }
 
         private void txtOperand1_TextChanged(object sender, EventArgs e)
@@ -276,9 +264,7 @@ namespace WindowsFormsApp1
 
                 fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
-                // hex and bin conversion text boxes
-                txtOp1Hex.Text = fpn.returnEncodedHexString();
-                txtOp1Bin.Text = fpn.returnSignStr32() + "  " + fpn.returnExponentStr32() + "  " + fpn.returnMantissaStr32();
+               
             }
         }
 
@@ -291,9 +277,6 @@ namespace WindowsFormsApp1
 
                 fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
-                // hex and bin conversion text boxes
-                txtOp2Hex.Text = fpn.returnEncodedHexString();
-                txtOp2Bin.Text = fpn.returnSignStr32() + "  " + fpn.returnExponentStr32() + "  " + fpn.returnMantissaStr32();
             }
         }
 
@@ -323,9 +306,6 @@ namespace WindowsFormsApp1
 
         private void btnMult_Click(object sender, EventArgs e)
         {
-            lblOperation.Visible = true;
-            lblOperation.Text = "X";
-
             string s1 = txtOperand1.Text;
             string s2 = txtOperand2.Text;
 
@@ -346,17 +326,13 @@ namespace WindowsFormsApp1
                 //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
 
                 txtResult.Text = "";
-                txtResultHex.Text = "";
-                txtResultBin.Text = "";
+
             }
 
         }
 
         private void btnMinus_Click(object sender, EventArgs e)
         {
-            lblOperation.Visible = true;
-            lblOperation.Text = "-";
-
             string s1 = txtOperand1.Text;
             string s2 = txtOperand2.Text;
 
@@ -376,17 +352,13 @@ namespace WindowsFormsApp1
                 //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
 
                 txtResult.Text = "";
-                txtResultHex.Text = "";
-                txtResultBin.Text = "";
+
             }
 
         }
 
         private void btnPlus_Click(object sender, EventArgs e)
         {
-            lblOperation.Visible = true;
-            lblOperation.Text = "+";
-
             string s1 = txtOperand1.Text;
             string s2 = txtOperand2.Text;
 
@@ -406,8 +378,6 @@ namespace WindowsFormsApp1
                 //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
 
                 txtResult.Text = "";
-                txtResultHex.Text = "";
-                txtResultBin.Text = "";
             }
 
         }
@@ -550,8 +520,7 @@ namespace WindowsFormsApp1
             }
 
             txtResult.Text = "";
-            txtResultHex.Text = "";
-            txtResultBin.Text = "";
+
         }
 
         private void txtResult_TextChanged(object sender, EventArgs e)
@@ -566,7 +535,7 @@ namespace WindowsFormsApp1
 
         private void btnEquals_Click(object sender, EventArgs e)
         {
-
+            Debug.WriteLine("cb=" + cbOperation.SelectedIndex);
             //lblOperation.Visible = true;
 
             string s1 = txtOperand1.Text;
@@ -587,31 +556,53 @@ namespace WindowsFormsApp1
 
                 fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber(fpOperations.Standard754FPNumber.EMPTYNUM);
 
-                // fpn3 is initialized to a default
-                if (lblOperation.Text == ADD)
+                txtAllResults.Text += "";
+
+                //fpn3 is initialized to a default
+                if (cbOperation.SelectedIndex == 2)  // 2
                 {
                     fpn3 = fpn1 + fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtResultHex.Text = fpn3.returnEncodedHexString();
-                    txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
                 }
-                else if(lblOperation.Text == SUBTRACT)
+                else if (cbOperation.SelectedIndex == 1)  // 1
                 {
                     fpn3 = fpn1 - fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtResultHex.Text = fpn3.returnEncodedHexString();
-                    txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
                 }
-                else if (lblOperation.Text == MULTIPLY)
+                else if (cbOperation.SelectedIndex == 0)  // 0
                 {
                     fpn3 = fpn1 * fpn2;
 
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtResultHex.Text = fpn3.returnEncodedHexString();
-                    txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("result");
                 }
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblOperation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            string s1 = txtOperand1.Text;
+
+            if ((s1 != ".") && (s1 != ".")) // if number string is just starting with "." it will break Decimal.Parse
+            {
+                decimal d1 = Decimal.Parse(s1);
+                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
+                txtAllResults.Text += "";
+                txtAllResults.Text = fpn1.Dump2("viewing operand 1:");                
             }
         }
     }

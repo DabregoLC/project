@@ -69,6 +69,25 @@ namespace fpOperations
 			Debug.WriteLine("decodedMantissa_  = {0} ", decodedMantissa_);
 		}
 
+		public string Dump2(string msg)
+		{
+			string s1 = "==========================================================" + Environment.NewLine;
+			s1 += (msg) + Environment.NewLine;
+			s1 += "==========================================================" + Environment.NewLine;
+			s1 += string.Format("floatVal_         = {0} ", floatVal_) + Environment.NewLine;
+			s1 += string.Format("decimalVal_       = {0} ", decimalVal_) + Environment.NewLine;
+			s1 += string.Format("encodedHexString_ = " + encodedHexString_) + Environment.NewLine;
+			s1 += string.Format("ieee32String      = " + ieee32BitString_) + Environment.NewLine;
+			s1 += string.Format("encodedSign_      = {0} ", encodedSign_) + Environment.NewLine;
+			s1 += string.Format("encodedExponent_  = {0} ", encodedExponent_) + Environment.NewLine;
+			s1 += string.Format("encodedMantissa_  = {0} ", encodedMantissa_) + Environment.NewLine;
+			s1 += string.Format("decodedSign_      = {0} ", decodedSign_) + Environment.NewLine;
+			s1 += string.Format("decodedExponent_  = [{0}] 2^[{1}] = {2}", decodedExponent_, decodedExponent_, Math.Pow(2, decodedExponent_)) + Environment.NewLine;
+			s1 += string.Format("decodedMantissa_  = {0} ", decodedMantissa_) + Environment.NewLine;
+
+			return s1;
+		}
+
 		public Standard754FPNumber(float f1)
 		{
 			Init();

@@ -1,0 +1,24 @@
+	public class Standard754FPNumber
+		public const string EMPTYSTR = "-9999";
+		public const int EMPTYNUM = -9999;
+		public static int NUM_EXPONENT_BITS32 = 8;
+		public static int NUM_SIGN_BITS32 = 1;
+		public static int NUM_MANTISSA_BITS32 = 23;
+		public static int BIAS32 = 127;
+		public static int HEX_LENGTH32 = 8;
+		public void Dump(string msg)
+		public string Dump2(string msg)
+		public Standard754FPNumber(float f1)
+		public Standard754FPNumber(string signBitStr, string expBitsStr, string mantissaBitsStr)
+		public string returnSignStr32()
+		public string returnExponentStr32()
+		public string returnMantissaStr32()
+		public string returnEncodedHexString()
+		public decimal returnDecimalVal()
+		public float returnFloatVal()
+		public static string HexStringToBinaryString(string hexStr)
+		public static float HexStringToFloat(string hexastr)
+		public bool IsRealNumber(int sign, int exp, int mantissa)
+		public static Standard754FPNumber operator +(Standard754FPNumber b1, Standard754FPNumber c1)
+		public static Standard754FPNumber operator -(Standard754FPNumber b1, Standard754FPNumber c1)
+		public static Standard754FPNumber operator *(Standard754FPNumber b1, Standard754FPNumber c1)
