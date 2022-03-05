@@ -118,8 +118,8 @@ namespace WindowsFormsApp1
         {
             //lblStatusOperand1.Visible = false;
 
-            //txtOperand1.Text = "0";
-            //txtOperand2.Text = "0";
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0";
 
             btn0.Enabled = true;
             btn1.Enabled = true;
@@ -144,41 +144,41 @@ namespace WindowsFormsApp1
 
         private void rdoHex_CheckedChanged(object sender, EventArgs e)
         {
-            //txtOperand1.Text = "0";
-            //txtOperand2.Text = "0"; 
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0"; 
             
             //lblStatusOperand1.Visible = false;
 
-            btn0.Enabled = false;
-            btn1.Enabled = false;
-            btn2.Enabled = false;
-            btn3.Enabled = false;
-            btn4.Enabled = false;
-            btn5.Enabled = false;
-            btn6.Enabled = false;
-            btn7.Enabled = false;
-            btn8.Enabled = false;
-            btn9.Enabled = false;
-            btnA.Enabled = false;
-            btnB.Enabled = false;
-            btnC.Enabled = false;
-            btnD.Enabled = false;
-            btnE.Enabled = false;
-            btnF.Enabled = false;
-            btnDot.Enabled = false;
-            btnBackSpace.Enabled = false;
-            btnClear.Enabled = false;
+            btn0.Enabled = true;
+            btn1.Enabled = true;
+            btn2.Enabled = true;
+            btn3.Enabled = true;
+            btn4.Enabled = true;
+            btn5.Enabled = true;
+            btn6.Enabled = true;
+            btn7.Enabled = true;
+            btn8.Enabled = true;
+            btn9.Enabled = true;
+            btnA.Enabled = true;
+            btnB.Enabled = true;
+            btnC.Enabled = true;
+            btnD.Enabled = true;
+            btnE.Enabled = true;
+            btnF.Enabled = true;
+            btnDot.Enabled = true;
+            btnBackSpace.Enabled = true;
+            btnClear.Enabled = true;
         }
 
         private void rdoBin_CheckedChanged(object sender, EventArgs e)
         {
-            //txtOperand1.Text = "0";
-            //txtOperand2.Text = "0";
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0";
 
             //lblStatusOperand1.Visible = true;
 
-            btn0.Enabled = false;
-            btn1.Enabled = false;
+            btn0.Enabled = true;
+            btn1.Enabled = true;
             btn2.Enabled = false;
             btn3.Enabled = false;
             btn4.Enabled = false;
@@ -193,9 +193,9 @@ namespace WindowsFormsApp1
             btnD.Enabled = false;
             btnE.Enabled = false;
             btnF.Enabled = false;
-            btnDot.Enabled = false;
-            btnBackSpace.Enabled = false;
-            btnClear.Enabled = false;
+            btnDot.Enabled = true;
+            btnBackSpace.Enabled = true;
+            btnClear.Enabled = true;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -260,12 +260,13 @@ namespace WindowsFormsApp1
             string s1 = txtOperand1.Text;
             if (s1 != ".")  // if number string is just starting with "." it will break Decimal.Parse
             {
-                decimal d1 = Decimal.Parse(s1);
+                //decimal d1 = Decimal.Parse(s1);
 
-                fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
+                //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
                
             }
+            lblOp1Len.Text = txtOperand1.Text.Length.ToString();
         }
 
         private void txtOperand2_TextChanged(object sender, EventArgs e)
@@ -273,11 +274,12 @@ namespace WindowsFormsApp1
             string s1 = txtOperand2.Text;
             if (s1 != ".")  // if number string is just starting with "." it will break Decimal.Parse
             {
-                decimal d1 = Decimal.Parse(s1);
+                //decimal d1 = Decimal.Parse(s1);
 
-                fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
+                //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
 
             }
+            lblOp2Len.Text = txtOperand2.Text.Length.ToString();
         }
 
         private void txtOperand1_Enter(object sender, EventArgs e)
@@ -536,7 +538,62 @@ namespace WindowsFormsApp1
         private void btnEquals_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("cb=" + cbOperation.SelectedIndex);
-            //lblOperation.Visible = true;
+            string errStr1 = "";
+            txtAllResults.Text = "";
+
+            if (rdoDec.Checked)
+            { }
+
+            if (rdoHex.Checked)
+            {
+                Debug.WriteLine("h:");
+                Debug.WriteLine(txtOperand1.Text.Length);
+                Debug.WriteLine(txtOperand2.Text.Length);
+                
+
+                if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.HEX_LENGTH32)
+                {
+                    errStr1 += "operand 1 hex input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
+                }
+
+                if (txtOperand2.Text.Length != fpOperations.Standard754FPNumber.HEX_LENGTH32)
+                {
+                    errStr1 += Environment.NewLine + "operand 2 hex input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand2.Text.Length; 
+                }
+
+                if(errStr1.Length>0)
+                { 
+                    txtAllResults.Text += errStr1; 
+                }
+            }
+
+            if (rdoBin.Checked)
+            {
+                Debug.WriteLine("b:");
+                Debug.WriteLine(txtOperand1.Text.Length);
+                Debug.WriteLine(txtOperand2.Text.Length);
+                if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32 
+                    + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32 
+                    + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
+                {
+                    errStr1 += "operand 1 binary input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
+                }
+ 
+
+                if (txtOperand2.Text.Length != fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32
+                    + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32
+                    + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
+                {
+                    errStr1 += Environment.NewLine + "operand 2 binary input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand2.Text.Length;
+                }
+
+                if (errStr1.Length > 0)
+                {
+                    txtAllResults.Text += errStr1;
+                }
+            }
+
+ return;
 
             string s1 = txtOperand1.Text;
             string s2 = txtOperand2.Text;
@@ -546,9 +603,6 @@ namespace WindowsFormsApp1
                 decimal d1 = Decimal.Parse(s1);
 
                 fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
-
-                //txtOp1Hex.Text = fpn1.returnEncodedHexString();
-                //txtOp1Bin.Text = fpn1.returnSignStr32() + "  " + fpn1.returnExponentStr32() + "  " + fpn1.returnMantissaStr32();
 
                 decimal d2 = Decimal.Parse(s2);
 
@@ -604,6 +658,11 @@ namespace WindowsFormsApp1
                 txtAllResults.Text += "";
                 txtAllResults.Text = fpn1.Dump2("viewing operand 1:");                
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

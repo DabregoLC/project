@@ -69,6 +69,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnView = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.lblOp1Len = new System.Windows.Forms.Label();
+            this.lblOp2Len = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -395,6 +397,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(560, 46);
             this.panel1.TabIndex = 36;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // rdoBin
             // 
@@ -514,7 +517,7 @@
             "X",
             "-",
             "+"});
-            this.cbOperation.Location = new System.Drawing.Point(280, 127);
+            this.cbOperation.Location = new System.Drawing.Point(128, 136);
             this.cbOperation.Name = "cbOperation";
             this.cbOperation.Size = new System.Drawing.Size(97, 32);
             this.cbOperation.TabIndex = 62;
@@ -523,11 +526,11 @@
             // txtAllResults
             // 
             this.txtAllResults.Font = new System.Drawing.Font("Courier New", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAllResults.Location = new System.Drawing.Point(720, 16);
+            this.txtAllResults.Location = new System.Drawing.Point(768, 16);
             this.txtAllResults.Multiline = true;
             this.txtAllResults.Name = "txtAllResults";
             this.txtAllResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAllResults.Size = new System.Drawing.Size(1128, 632);
+            this.txtAllResults.Size = new System.Drawing.Size(1080, 632);
             this.txtAllResults.TabIndex = 64;
             // 
             // label4
@@ -543,7 +546,7 @@
             // btnView
             // 
             this.btnView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnView.Location = new System.Drawing.Point(128, 305);
+            this.btnView.Location = new System.Drawing.Point(400, 120);
             this.btnView.Margin = new System.Windows.Forms.Padding(6);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(288, 61);
@@ -562,12 +565,34 @@
             this.label5.TabIndex = 67;
             this.label5.Text = "Input Type";
             // 
+            // lblOp1Len
+            // 
+            this.lblOp1Len.AutoSize = true;
+            this.lblOp1Len.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOp1Len.Location = new System.Drawing.Point(696, 80);
+            this.lblOp1Len.Name = "lblOp1Len";
+            this.lblOp1Len.Size = new System.Drawing.Size(40, 44);
+            this.lblOp1Len.TabIndex = 68;
+            this.lblOp1Len.Text = "0";
+            // 
+            // lblOp2Len
+            // 
+            this.lblOp2Len.AutoSize = true;
+            this.lblOp2Len.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOp2Len.Location = new System.Drawing.Point(696, 192);
+            this.lblOp2Len.Name = "lblOp2Len";
+            this.lblOp2Len.Size = new System.Drawing.Size(40, 44);
+            this.lblOp2Len.TabIndex = 69;
+            this.lblOp2Len.Text = "0";
+            // 
             // btnPosNeg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1880, 697);
+            this.Controls.Add(this.lblOp2Len);
+            this.Controls.Add(this.lblOp1Len);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnView);
             this.Controls.Add(this.label4);
@@ -660,6 +685,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnView;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblOp1Len;
+        private System.Windows.Forms.Label lblOp2Len;
     }
 }
 
