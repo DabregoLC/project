@@ -69,17 +69,24 @@ namespace WindowsFormsApp1
 
                     txtOperand1.Text = appendStr;
                 }
-                else if ((txtOperand1.Text == "0") && (rdoBin.Checked))
+                else if ((rdoBin.Checked))
                 {
                     // have to do this to make it behave like a calculator display when first starting out, remember we start out with '0' in display so if we press '0' we want append
                     // but if we press '1' we want to turn '0' to '1'
-                    if (appendStr == "0")
+                    if ((txtOperand1.Text == "0") && (txtOperand1.Text.Length == 1))
+                    {
+                        if (appendStr == "0")
+                        {
+                            txtOperand1.Text += appendStr;
+                        }
+                        else if(appendStr == "1")
+                        {
+                            txtOperand1.Text = appendStr;
+                        }
+                    }
+                    else
                     {
                         txtOperand1.Text += appendStr;
-                    }
-                    else if(appendStr == "1")
-                    {
-                        txtOperand1.Text = appendStr;
                     }
                 }
                 else
@@ -124,13 +131,20 @@ namespace WindowsFormsApp1
                 {
                     // have to do this to make it behave like a calculator display when first starting out, remember we start out with '0' in display so if we press '0' we want append
                     // but if we press '1' we want to turn '0' to '1'
-                    if (appendStr == "0")
+                    if ((txtOperand1.Text == "0") && (txtOperand1.Text.Length == 1))
+                    {
+                        if (appendStr == "0")
+                        {
+                            txtOperand2.Text += appendStr;
+                        }
+                        else if (appendStr == "1")
+                        {
+                            txtOperand2.Text = appendStr;
+                        }
+                    }
+                    else
                     {
                         txtOperand2.Text += appendStr;
-                    }
-                    else if (appendStr == "1")
-                    {
-                        txtOperand2.Text = appendStr;
                     }
                 }
                 else
@@ -138,7 +152,7 @@ namespace WindowsFormsApp1
 
             }
 
-            txtResult.Text = "";
+            //txtResult.Text = "";
             
         }
         public btnPosNeg()
@@ -192,6 +206,7 @@ namespace WindowsFormsApp1
 
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
+            txtResult.Text = "0";
             txtAllResults.Text = "";
 
             btn0.Enabled = true;
@@ -229,8 +244,11 @@ namespace WindowsFormsApp1
 
         private void rdoHex_CheckedChanged(object sender, EventArgs e)
         {
+            // **** this is IEEE 754 ENCODED hex ****
+
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
+            txtResult.Text = "0";
             txtAllResults.Text = "";
             //lblStatusOperand1.Visible = false;
 
@@ -270,8 +288,11 @@ namespace WindowsFormsApp1
 
         private void rdoBin_CheckedChanged(object sender, EventArgs e)
         {
+            // **** this is IEEE 754 ENCODED bin ****
+
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
+            txtResult.Text = "0";
             txtAllResults.Text = "";
             //lblStatusOperand1.Visible = true;
 
@@ -698,14 +719,112 @@ namespace WindowsFormsApp1
             string str1 = "";
             string str2 = "";
 
-            // starting with a dec number ---------------------------------------------------
+            // ---------------------------------------------------
+            // starting with unencoded hex 
+            // simply add/subtract/multiply the unencoded numbers
+            // turn result into IEEE 754 and exit
+            // ---------------------------------------------------
+            if (rdoHexUnenc.Checked)
+            {
+                // convert unencoded hex string to dec string
+
+                int ival1 = int.Parse(txtOperand1.Text, System.Globalization.NumberStyles.HexNumber);
+                int ival2 = int.Parse(txtOperand2.Text, System.Globalization.NumberStyles.HexNumber);
+                int ival3;
+
+                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
+                fpOperations.Standard754FPNumber fpn2 = new fpOperations.Standard754FPNumber((float)ival2);
+
+                if (cbOperation.SelectedIndex == 2)  //+
+                {
+                    ival3 = ival1 + ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = ival3.ToString("X");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                }
+                else if (cbOperation.SelectedIndex == 1)  // -
+                {
+                    ival3 = ival1 - ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = ival3.ToString("X");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                }
+                else if (cbOperation.SelectedIndex == 0)  // *
+                {
+                    ival3 = ival1 * ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = ival3.ToString("X");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                }
+
+                // unencoded hex and bin were added late, original processing for IEEE 754 calculations would fall through, we want to skip that original processing
+                return;
+            }
+
+            // ---------------------------------------------------
+            // starting with unencoded bin 
+            // simply add/subtract/multiply the unencoded numbers
+            // turn result into IEEE 754 and exit
+            // ---------------------------------------------------
+            if (rdoBinUnenc.Checked)
+            {
+                // convert unencoded bin string to dec string
+                int ival1 = Convert.ToInt32(txtOperand1.Text, 2);
+                int ival2 = Convert.ToInt32(txtOperand2.Text, 2);
+                int ival3;
+
+                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
+                fpOperations.Standard754FPNumber fpn2 = new fpOperations.Standard754FPNumber((float)ival2);
+
+                if (cbOperation.SelectedIndex == 2)  //+
+                {
+                    ival3 = ival1 + ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = Convert.ToString(ival3, 2);
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                }
+                else if (cbOperation.SelectedIndex == 1)  // -
+                {
+                    ival3 = ival1 - ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = Convert.ToString(ival3, 2);
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                }
+                else if (cbOperation.SelectedIndex == 0)  // *
+                {
+                    ival3 = ival1 * ival2;
+                    fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
+
+                    txtResult.Text = Convert.ToString(ival3, 2);
+                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                }
+
+                // unencoded hex and bin were added late, original processing for IEEE 754 calculations would fall through, we want to skip that original processing
+                return;
+            }
+
+            // ---------------------------------------------------
+            // Following is the original processing before unenc hex 
+            // and bin were added to requirements.
+            // ---------------------------------------------------
+
+            // ---------------------------------------------------
+            // starting with a dec number 
+            // ---------------------------------------------------
             if (rdoDec.Checked)
             {
                 str1 = txtOperand1.Text;
                 str2 = txtOperand2.Text;
             }
 
-            // starting with a hex humber ---------------------------------------------------
+            // ---------------------------------------------------
+            // starting with a IEEE 754 encoded hex humber 
+            // ---------------------------------------------------
             if (rdoHex.Checked)
             {
                 Debug.WriteLine("h:");
@@ -741,7 +860,9 @@ namespace WindowsFormsApp1
                 }
             }
 
-            // starting with a bin number ---------------------------------------------------
+            // ---------------------------------------------------
+            // starting with a IEEE 754 encoded bin number 
+            // ---------------------------------------------------
             if (rdoBin.Checked)
             {
                 Debug.WriteLine("b:");
@@ -757,9 +878,6 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    //float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
-                    //str1 = tempFl.ToString();
-
                     string signStr = txtOperand1.Text.Substring(0, 1);
                     string expStr  = txtOperand1.Text.Substring(1, 8);
                     string mantStr = txtOperand1.Text.Substring(9, 23);
@@ -777,9 +895,6 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    //float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
-                    //str1 = tempFl.ToString();
-
                     string signStr = txtOperand1.Text.Substring(0, 1);
                     string expStr = txtOperand1.Text.Substring(1, 8);
                     string mantStr = txtOperand1.Text.Substring(9, 23);
@@ -795,10 +910,11 @@ namespace WindowsFormsApp1
                 }
             }
 
-            //string s1 = txtOperand1.Text;
-            //string s2 = txtOperand2.Text;
-
-            // str1, str2 need to be a decimal here, time constraints
+            // ---------------------------------------------------
+            // this was original IEEE 754 calculation before new requirements
+            // this accommodated dec, IEEE bin, IEEE hex, but not unencoded hex and bin
+            // str1, str2 need to start as a decimal here, but are not due to time constraints
+            // ---------------------------------------------------
             if ((str1 != ".") && (str2 != ".")) // if number string is just starting with "." it will break Decimal.Parse
             {
                 //decimal d1 = Decimal.Parse(str1);
@@ -815,28 +931,48 @@ namespace WindowsFormsApp1
 
                 string operationStr = cbOperation.SelectedItem.ToString();
 
-                if (cbOperation.SelectedIndex == 2)  // 2
+                if (cbOperation.SelectedIndex == 2)  //+
                 {
                     fpn3 = fpn1 + fpn2;
 
-                    txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
+                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                    txtAllResults.Text = "Addition" + Environment.NewLine;
                 }
-                else if (cbOperation.SelectedIndex == 1)  // 1
+                else if (cbOperation.SelectedIndex == 1)  // -
                 {
                     fpn3 = fpn1 - fpn2;
 
-                    txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
+                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                    txtAllResults.Text = "Subtraction" + Environment.NewLine;
                 }
-                else if (cbOperation.SelectedIndex == 0)  // 0
+                else if (cbOperation.SelectedIndex == 0)  // *
                 {
                     fpn3 = fpn1 * fpn2;
 
-                    txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
+                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                    txtAllResults.Text = "Multiplication" + Environment.NewLine;
                 }
-            }
+
+                if(rdoDec.Checked)
+                {
+                    txtResult.Text = fpn3.returnDecimalVal().ToString();
+                }
+                else if (rdoHex.Checked)
+                {
+                    txtResult.Text = fpn3.returnEncodedHexString().ToString();
+                }
+                else if (rdoBin.Checked)
+                {
+                    txtResult.Text = fpn3.returnSignStr32().ToString() +
+                                    fpn3.returnExponentStr32().ToString() +
+                                    fpn3.returnMantissaStr32().ToString();
+                }
+                txtAllResults.Text = fpn1.Dump2("operand 1") + Environment.NewLine + fpn2.Dump2("operand 2") + Environment.NewLine + fpn3.Dump2("result"); ;
+
+            } 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -853,7 +989,9 @@ namespace WindowsFormsApp1
         {
             string errStr1 = "";
 
-            // view formatted decimal ---------------------------------------------------
+            // ---------------------------------------------------
+            // view decimal 
+            // ---------------------------------------------------
             if (rdoDec.Checked)
             {
                 string s1 = txtOperand1.Text;
@@ -863,10 +1001,13 @@ namespace WindowsFormsApp1
                     decimal d1 = Decimal.Parse(s1);
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
                     txtAllResults.Text += "";
-                    txtAllResults.Text = fpn1.Dump2("viewing operand 1:");
+                    txtAllResults.Text = fpn1.Dump2("viewing operand 1:" + s1);
                 }
             }
-            // view formatted hex ---------------------------------------------------
+
+            // ---------------------------------------------------
+            // view encoded IEEE 754 hex 
+            // ---------------------------------------------------
             else if (rdoHex.Checked)
             {
                 // check hex operand 1 length
@@ -878,7 +1019,7 @@ namespace WindowsFormsApp1
                 {
                     float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(tempFl);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
                 }
 
                 if (errStr1.Length > 0)
@@ -887,7 +1028,9 @@ namespace WindowsFormsApp1
                     return;
                 }
             }
-            // view formatted bin ---------------------------------------------------
+            // ---------------------------------------------------
+            // view encoded IEEE 754 bin 
+            // ---------------------------------------------------
             else if (rdoBin.Checked)
             {
                 // check bin operand 1 length
@@ -904,7 +1047,7 @@ namespace WindowsFormsApp1
                     string mantStr = txtOperand1.Text.Substring(9, 23);
 
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:");
+                    txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
 
                 }
                 if (errStr1.Length > 0)
@@ -912,6 +1055,25 @@ namespace WindowsFormsApp1
                     txtAllResults.Text += errStr1;
                     return;
                 }
+            }
+
+            // ---------------------------------------------------
+            // view unencoded hex
+            // ---------------------------------------------------
+            else if (rdoHexUnenc.Checked)
+            {
+                int ival1 = int.Parse(txtOperand1.Text, System.Globalization.NumberStyles.HexNumber);
+                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
+                txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
+            }
+            // ---------------------------------------------------
+            // view unencoded bin 
+            // ---------------------------------------------------
+            else if (rdoBinUnenc.Checked)
+            {
+                int ival1 = Convert.ToInt32(txtOperand1.Text, 2);
+                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
+                txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
             }
         }
 
@@ -922,8 +1084,11 @@ namespace WindowsFormsApp1
 
         private void rdoHexUnenc_CheckedChanged(object sender, EventArgs e)
         {
+            // **** this is UNENCODED hex ****
+
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
+            txtResult.Text = "0";
             txtAllResults.Text = "";
             //lblStatusOperand1.Visible = false;
 
@@ -962,8 +1127,11 @@ namespace WindowsFormsApp1
 
         private void rdoBinUnenc_CheckedChanged(object sender, EventArgs e)
         {
+            // **** this is UNENCODED bin ****
+
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
+            txtResult.Text = "0";
             txtAllResults.Text = "";
             //lblStatusOperand1.Visible = true;
 
