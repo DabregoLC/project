@@ -29,7 +29,7 @@ namespace WindowsFormsApp1
 
         public void appendOperand(string appendStr)
         {
-
+            string ggg = appendStr;
             if (gWhichOpHasFocus == (int)OpFocus.OPERAND1)
             {
 
@@ -69,7 +69,16 @@ namespace WindowsFormsApp1
                 }
                 else if ((txtOperand1.Text == "0") && (rdoBin.Checked))
                 {
-                    txtOperand1.Text += appendStr;
+                    // have to do this to make it behave like a calculator display when first starting out, remember we start out with '0' in display so if we press '0' we want append
+                    // but if we press '1' we want to turn '0' to '1'
+                    if (appendStr == "0")
+                    {
+                        txtOperand1.Text += appendStr;
+                    }
+                    else if(appendStr == "1")
+                    {
+                        txtOperand1.Text = appendStr;
+                    }
                 }
                 else
                     txtOperand1.Text += appendStr;
@@ -100,18 +109,6 @@ namespace WindowsFormsApp1
                 if (appendStr == "." && txtOperand2.Text.Contains("."))
                 { appendStr = ""; }
 
-                //if (txtOperand2.Text == "0")
-                //{
-                //    if (appendStr == ".")
-                //    {
-                //        appendStr = "0.";
-                //    }
-
-                //    txtOperand2.Text = appendStr;
-                //}
-                //else
-                //    txtOperand2.Text += appendStr;
-
                 else if ((txtOperand2.Text == "0") && (!rdoBin.Checked))
                 {
                     if (appendStr == ".")
@@ -123,7 +120,16 @@ namespace WindowsFormsApp1
                 }
                 else if ((txtOperand2.Text == "0") && (rdoBin.Checked))
                 {
-                    txtOperand2.Text += appendStr;
+                    // have to do this to make it behave like a calculator display when first starting out, remember we start out with '0' in display so if we press '0' we want append
+                    // but if we press '1' we want to turn '0' to '1'
+                    if (appendStr == "0")
+                    {
+                        txtOperand2.Text += appendStr;
+                    }
+                    else if (appendStr == "1")
+                    {
+                        txtOperand2.Text = appendStr;
+                    }
                 }
                 else
                     txtOperand2.Text += appendStr;
@@ -356,6 +362,18 @@ namespace WindowsFormsApp1
             txtOperand2.Text = "0";
 
             txtResult.Text = "";
+
+            lblOp1Len.Text = "";
+            //lblOp1Len.Visible = false;
+            //label6.Visible = false;
+            lblOp1Limit.Text = "";
+            //lblOp1Limit.Visible = false;
+
+            lblOp2Len.Text = "";
+            //lblOp2Len.Visible = false;
+            //label7.Visible = false;
+            lblOp2Limit.Text = "";
+            //lblOp2Limit.Visible = false;
         }
 
         private void txtOperand1_TextChanged(object sender, EventArgs e)
@@ -676,14 +694,14 @@ namespace WindowsFormsApp1
             string str1 = "";
             string str2 = "";
 
-            // starting with a dec number
+            // starting with a dec number ---------------------------------------------------
             if (rdoDec.Checked)
             {
                 str1 = txtOperand1.Text;
                 str2 = txtOperand2.Text;
             }
 
-            // starting with a hex humber
+            // starting with a hex humber ---------------------------------------------------
             if (rdoHex.Checked)
             {
                 Debug.WriteLine("h:");
@@ -719,7 +737,7 @@ namespace WindowsFormsApp1
                 }
             }
 
-            // starting with a bin number
+            // starting with a bin number ---------------------------------------------------
             if (rdoBin.Checked)
             {
                 Debug.WriteLine("b:");
@@ -829,14 +847,67 @@ namespace WindowsFormsApp1
 
         private void btnView_Click(object sender, EventArgs e)
         {
-            string s1 = txtOperand1.Text;
+            string errStr1 = "";
 
-            if ((s1 != ".") && (s1 != ".")) // if number string is just starting with "." it will break Decimal.Parse
+            // view formatted decimal ---------------------------------------------------
+            if (rdoDec.Checked)
             {
-                decimal d1 = Decimal.Parse(s1);
-                fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
-                txtAllResults.Text += "";
-                txtAllResults.Text = fpn1.Dump2("viewing operand 1:");                
+                string s1 = txtOperand1.Text;
+
+                if ((s1 != ".") && (s1 != ".")) // if number string is just starting with "." it will break Decimal.Parse
+                {
+                    decimal d1 = Decimal.Parse(s1);
+                    fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
+                    txtAllResults.Text += "";
+                    txtAllResults.Text = fpn1.Dump2("viewing operand 1:");
+                }
+            }
+            // view formatted hex ---------------------------------------------------
+            else if (rdoHex.Checked)
+            {
+                // check hex operand 1 length
+                if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.HEX_LENGTH32)
+                {
+                    errStr1 += "operand 1 hex input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
+                }
+                else
+                {
+                    float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
+                    fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(tempFl);
+                    txtAllResults.Text = fpn1.Dump2("operand 1:");
+                }
+
+                if (errStr1.Length > 0)
+                {
+                    txtAllResults.Text += errStr1;
+                    return;
+                }
+            }
+            // view formatted bin ---------------------------------------------------
+            else if (rdoBin.Checked)
+            {
+                // check bin operand 1 length
+                if (txtOperand1.Text.Length != fpOperations.Standard754FPNumber.NUM_EXPONENT_BITS32
+                    + fpOperations.Standard754FPNumber.NUM_MANTISSA_BITS32
+                    + fpOperations.Standard754FPNumber.NUM_SIGN_BITS32)
+                {
+                    errStr1 += "operand 1 binary input must be " + fpOperations.Standard754FPNumber.HEX_LENGTH32 + " bits, currently " + txtOperand1.Text.Length;
+                }
+                else
+                {
+                    string signStr = txtOperand1.Text.Substring(0, 1);
+                    string expStr = txtOperand1.Text.Substring(1, 8);
+                    string mantStr = txtOperand1.Text.Substring(9, 23);
+
+                    fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
+                    txtAllResults.Text = fpn1.Dump2("operand 1:");
+
+                }
+                if (errStr1.Length > 0)
+                {
+                    txtAllResults.Text += errStr1;
+                    return;
+                }
             }
         }
 

@@ -550,12 +550,12 @@
             // btnView
             // 
             this.btnView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnView.Location = new System.Drawing.Point(400, 120);
+            this.btnView.Location = new System.Drawing.Point(248, 120);
             this.btnView.Margin = new System.Windows.Forms.Padding(6);
             this.btnView.Name = "btnView";
-            this.btnView.Size = new System.Drawing.Size(288, 61);
+            this.btnView.Size = new System.Drawing.Size(440, 61);
             this.btnView.TabIndex = 66;
-            this.btnView.Text = "View Operand 1";
+            this.btnView.Text = "Format Operand 1";
             this.btnView.UseVisualStyleBackColor = true;
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
