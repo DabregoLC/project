@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 
+// rdoHex and rdoBin are actually for the IEEE 754 formats.  These were part of the initial spec before other formats were added.
+// Going back and renaming control objects usually leads to problems.  
+
 namespace WindowsFormsApp1
 {
     public partial class btnPosNeg : Form
@@ -29,7 +32,6 @@ namespace WindowsFormsApp1
 
         public void appendOperand(string appendStr)
         {
-            string ggg = appendStr;
             if (gWhichOpHasFocus == (int)OpFocus.OPERAND1)
             {
 
@@ -248,7 +250,7 @@ namespace WindowsFormsApp1
             btnD.Enabled = true;
             btnE.Enabled = true;
             btnF.Enabled = true;
-            btnDot.Enabled = true;
+            btnDot.Enabled = false;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
 
@@ -374,6 +376,8 @@ namespace WindowsFormsApp1
             //label7.Visible = false;
             lblOp2Limit.Text = "";
             //lblOp2Limit.Visible = false;
+
+            txtAllResults.Text = "";
         }
 
         private void txtOperand1_TextChanged(object sender, EventArgs e)
@@ -914,6 +918,87 @@ namespace WindowsFormsApp1
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void rdoHexUnenc_CheckedChanged(object sender, EventArgs e)
+        {
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0";
+            txtAllResults.Text = "";
+            //lblStatusOperand1.Visible = false;
+
+            btn0.Enabled = true;
+            btn1.Enabled = true;
+            btn2.Enabled = true;
+            btn3.Enabled = true;
+            btn4.Enabled = true;
+            btn5.Enabled = true;
+            btn6.Enabled = true;
+            btn7.Enabled = true;
+            btn8.Enabled = true;
+            btn9.Enabled = true;
+            btnA.Enabled = true;
+            btnB.Enabled = true;
+            btnC.Enabled = true;
+            btnD.Enabled = true;
+            btnE.Enabled = true;
+            btnF.Enabled = true;
+            btnDot.Enabled = false;
+            btnBackSpace.Enabled = true;
+            btnClear.Enabled = true;
+
+            lblOp1Len.Text = "";
+            lblOp1Len.Visible = false;
+            label6.Visible = false;
+            lblOp1Limit.Text = "";
+            lblOp1Limit.Visible = false;
+
+            lblOp2Len.Text = "";
+            lblOp2Len.Visible = false;
+            label7.Visible = false;
+            lblOp2Limit.Text = "";
+            lblOp2Limit.Visible = false;
+        }
+
+        private void rdoBinUnenc_CheckedChanged(object sender, EventArgs e)
+        {
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0";
+            txtAllResults.Text = "";
+            //lblStatusOperand1.Visible = true;
+
+            btn0.Enabled = true;
+            btn1.Enabled = true;
+            btn2.Enabled = false;
+            btn3.Enabled = false;
+            btn4.Enabled = false;
+            btn5.Enabled = false;
+            btn6.Enabled = false;
+            btn7.Enabled = false;
+            btn8.Enabled = false;
+            btn9.Enabled = false;
+            btnA.Enabled = false;
+            btnB.Enabled = false;
+            btnC.Enabled = false;
+            btnD.Enabled = false;
+            btnE.Enabled = false;
+            btnF.Enabled = false;
+            btnDot.Enabled = false;
+            btnBackSpace.Enabled = true;
+            btnClear.Enabled = true;
+            btnNeg.Enabled = false;
+
+            lblOp1Len.Text = "";
+            lblOp1Len.Visible = false;
+            label6.Visible = false;
+            lblOp1Limit.Text = "";
+            lblOp1Limit.Visible = false;
+
+            lblOp2Len.Text = "";
+            lblOp2Len.Visible = false;
+            label7.Visible = false;
+            lblOp2Limit.Text = "";
+            lblOp2Limit.Visible = false;
         }
     }
 }

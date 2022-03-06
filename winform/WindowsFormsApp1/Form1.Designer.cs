@@ -75,6 +75,8 @@
             this.lblOp2Limit = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.rdoHexUnenc = new System.Windows.Forms.RadioButton();
+            this.rdoBinUnenc = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -393,7 +395,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.rdoBinUnenc);
             this.panel1.Controls.Add(this.rdoBin);
+            this.panel1.Controls.Add(this.rdoHexUnenc);
             this.panel1.Controls.Add(this.rdoHex);
             this.panel1.Controls.Add(this.rdoDec);
             this.panel1.Location = new System.Drawing.Point(128, 16);
@@ -419,7 +423,7 @@
             // rdoHex
             // 
             this.rdoHex.AutoSize = true;
-            this.rdoHex.Location = new System.Drawing.Point(176, 8);
+            this.rdoHex.Location = new System.Drawing.Point(232, 8);
             this.rdoHex.Margin = new System.Windows.Forms.Padding(6);
             this.rdoHex.Name = "rdoHex";
             this.rdoHex.Size = new System.Drawing.Size(156, 29);
@@ -629,6 +633,30 @@
             this.label7.TabIndex = 73;
             this.label7.Text = "/";
             // 
+            // rdoHexUnenc
+            // 
+            this.rdoHexUnenc.AutoSize = true;
+            this.rdoHexUnenc.Location = new System.Drawing.Point(80, 8);
+            this.rdoHexUnenc.Name = "rdoHexUnenc";
+            this.rdoHexUnenc.Size = new System.Drawing.Size(69, 29);
+            this.rdoHexUnenc.TabIndex = 74;
+            this.rdoHexUnenc.TabStop = true;
+            this.rdoHexUnenc.Text = "hex";
+            this.rdoHexUnenc.UseVisualStyleBackColor = true;
+            this.rdoHexUnenc.CheckedChanged += new System.EventHandler(this.rdoHexUnenc_CheckedChanged);
+            // 
+            // rdoBinUnenc
+            // 
+            this.rdoBinUnenc.AutoSize = true;
+            this.rdoBinUnenc.Location = new System.Drawing.Point(160, 8);
+            this.rdoBinUnenc.Name = "rdoBinUnenc";
+            this.rdoBinUnenc.Size = new System.Drawing.Size(63, 29);
+            this.rdoBinUnenc.TabIndex = 75;
+            this.rdoBinUnenc.TabStop = true;
+            this.rdoBinUnenc.Text = "bin";
+            this.rdoBinUnenc.UseVisualStyleBackColor = true;
+            this.rdoBinUnenc.CheckedChanged += new System.EventHandler(this.rdoBinUnenc_CheckedChanged);
+            // 
             // btnPosNeg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -739,6 +767,8 @@
         private System.Windows.Forms.Label lblOp2Limit;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RadioButton rdoBinUnenc;
+        private System.Windows.Forms.RadioButton rdoHexUnenc;
     }
 }
 
