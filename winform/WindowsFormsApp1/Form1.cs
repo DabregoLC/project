@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 
-// rdoHex and rdoBin are actually for the IEEE 754 formats.  These were part of the initial spec before other formats were added.
-// Going back and renaming control objects usually leads to problems.  
+//
+// rdoHex and rdoBin are actually for the IEEE 754 formats.  These were part of the initial spec before other unencoded hex/bin were added.
+// Going back and renaming control objects usually leads to problems, so regular unencoded hex/bin will be names rdoHexUnenc / rdoBinUnenc.  
+//
 
 namespace WindowsFormsApp1
 {
@@ -895,9 +897,9 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    string signStr = txtOperand1.Text.Substring(0, 1);
-                    string expStr = txtOperand1.Text.Substring(1, 8);
-                    string mantStr = txtOperand1.Text.Substring(9, 23);
+                    string signStr = txtOperand2.Text.Substring(0, 1);
+                    string expStr = txtOperand2.Text.Substring(1, 8);
+                    string mantStr = txtOperand2.Text.Substring(9, 23);
 
                     fpOperations.Standard754FPNumber fp = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
                     str2 = fp.returnFloatVal().ToString();
@@ -1167,6 +1169,99 @@ namespace WindowsFormsApp1
             label7.Visible = false;
             lblOp2Limit.Text = "";
             lblOp2Limit.Visible = false;
+        }
+
+        private void rdoTest4_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRunTest_Click(object sender, EventArgs e)
+        {
+            if(rdoTest1.Checked)
+            {
+                // dec
+                rdoDec.Checked = true;
+                txtOperand1.Text = "100";
+                txtOperand2.Text = "20";
+            }
+            else if (rdoTest2.Checked)
+            {
+                // hex unenc
+                rdoHexUnenc.Checked = true;
+                txtOperand1.Text = "3E8";  // 1000
+                txtOperand2.Text = "20";   // 14
+                lblTestData.Text = "1000 / 14";
+             }
+            else if (rdoTest3.Checked)
+            {
+                // bin unenc
+                rdoBinUnenc.Checked = true;
+                txtOperand1.Text = "11111010000"; // 2000
+                txtOperand2.Text = "11001000";  // 200
+                lblTestData.Text = "12000 / 20";
+            }
+            else if (rdoTest4.Checked)
+            {
+                // IEEE hex
+                rdoHex.Checked = true;
+                txtOperand1.Text = "42c80000";  // 100
+                txtOperand2.Text = "43480000";  // 200
+                lblTestData.Text = "100 / 200";
+            }
+            else if (rdoTest5.Checked)
+            {
+                // IEEE 754 bin
+                rdoBin.Checked = true;
+                txtOperand1.Text = "01000011010010000000000000000000";  // 200
+                txtOperand2.Text = "01000011100101100000000000000000";  // 300
+                lblTestData.Text = "200 / 300";
+            }
+            else if (rdoTest6.Checked)
+            {
+                // dec unenc
+                rdoDec.Checked = true;
+                txtOperand1.Text = "4000";
+                txtOperand2.Text = "2";
+                lblTestData.Text = "4000 / 2";
+            }
+            else if (rdoTest7.Checked)
+            {
+                // hex unenc
+                rdoHexUnenc.Checked = true;
+                txtOperand1.Text = "37";  //55 
+                txtOperand2.Text = "3039"; // 12345
+                lblTestData.Text = "37 / 3039";
+            }
+            else if (rdoTest8.Checked)
+            {
+                // bin unenc
+                rdoBinUnenc.Checked = true;
+                txtOperand1.Text = "101100";  // 44
+                txtOperand2.Text = "1001110001000";  // 5000
+                lblTestData.Text = "44 / 5000";
+            }
+            else if (rdoTest9.Checked)
+            {
+                // IEEE hex
+                rdoHex.Checked = true;
+                txtOperand1.Text = "4640e400";  // 12345
+                txtOperand2.Text = "45d42800";  // 6789
+                lblTestData.Text = "12345 / 6789";
+            }
+            else if (rdoTest10.Checked)
+            {
+                // IEEE 754 bin
+                rdoBin.Checked = true;
+                txtOperand1.Text = "01000110010000001110010000000000";  // 12345
+                txtOperand2.Text = "01000101110101000010100000000000";  // 6789
+                lblTestData.Text = "12345 / 6789";
+            }
+        }
+
+        private void rdoTest1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
