@@ -718,7 +718,8 @@
             "zero",
             "zero",
             "NAN",
-            "NAN"});
+            "NAN",
+            "Denormal"});
             this.cbTest1.Location = new System.Drawing.Point(8, 32);
             this.cbTest1.Name = "cbTest1";
             this.cbTest1.Size = new System.Drawing.Size(232, 32);

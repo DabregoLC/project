@@ -40,6 +40,7 @@ namespace fpOperations
 
 		public bool isZero = false;
 		public bool isNAN = false;
+		public bool isDenormal = false;
 
 		private void Init()
 		{
@@ -59,11 +60,12 @@ namespace fpOperations
 
 		public void Dump(string msg)
 		{
-			if ((isZero == true) || (isNAN == true))
+			if ((isZero == true) || (isNAN == true)|| (isDenormal == true))
 			{
 				Debug.WriteLine("bit string  = " + ieee32BitString_);
 				Debug.WriteLine("is zero     = {0} ", isZero);
 				Debug.WriteLine("is NAN      = {0} ", isNAN);
+				Debug.WriteLine("is Denormal = {0} ", isDenormal);
 			}
 			else
 			{
@@ -89,7 +91,7 @@ namespace fpOperations
 		public string Dump2(string msg)
 		{
 			string s1 = "";
-			if ((isZero == true) || (isNAN == true))
+			if ((isZero == true) || (isNAN == true) || (isDenormal == true))
 			{
 				s1 = "==========================================================" + Environment.NewLine;
 				s1 += "["+ (msg) + "]" + Environment.NewLine + Environment.NewLine;
@@ -97,6 +99,7 @@ namespace fpOperations
 				s1 += "IEEE bit string  = " + ieee32BitString_ + Environment.NewLine;
 				s1 += "is zero     = " + isZero + Environment.NewLine;
 				s1 += "is NAN      = " + isNAN + Environment.NewLine;
+				s1 += "is Denormal = " + isDenormal + Environment.NewLine;
 			}
 			else
 			{
@@ -143,7 +146,9 @@ namespace fpOperations
 				isNAN = true;
 			if (checkIsZero_IEEE_Bin(expStr32, mantissaStr32))
 				isZero = true;
-			if ((isNAN == true) || (isZero == true))
+			if(checkIsDenormal_IEEE_Bin(expStr32, mantissaStr32))
+				isDenormal = true;
+			if ((isNAN == true) || (isZero == true) || (isDenormal == true))
 				return;
 
 			// decode sign bit, exponent
@@ -172,9 +177,11 @@ namespace fpOperations
 				isNAN = true;
 			if (checkIsZero_IEEE_Bin(expBitsStr, mantissaBitsStr))
 				isZero = true;
-			if ((isNAN == true) || (isZero == true))
+			if (checkIsDenormal_IEEE_Bin(expBitsStr, mantissaBitsStr))
+				isDenormal = true;
+			if ((isNAN == true) || (isZero == true) || (isDenormal == true))
 				return;
-				
+
 			encodedSign_ = Convert.ToInt32(signBitStr, 2);
 			encodedExponent_ = Convert.ToInt32(expBitsStr, 2);
 			encodedMantissa_ = Convert.ToInt32(mantissaBitsStr, 2);
@@ -229,6 +236,17 @@ namespace fpOperations
 		{
 			// exponent all 1's, non-zero mantissa
 			if (allCharactersSame(expStr, '1') && (!allCharactersSame(mantStr, '0')))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public bool checkIsDenormal_IEEE_Bin(string expStr, string mantStr)
+		{
+			// all zero exponent
+			// non zero mantissa
+			if (allCharactersSame(expStr, '0') && (!allCharactersSame(mantStr, '0')))
 			{
 				return true;
 			}
