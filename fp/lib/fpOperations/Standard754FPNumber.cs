@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 
-namespace fpOperations
+namespace fpOperations 
 {
 	public class Standard754FPNumber
 	{
@@ -35,6 +35,12 @@ namespace fpOperations
 		public static int NUM_MANTISSA_BITS32 = 23;
 		public static int BIAS32 = 127;
 		public static int HEX_LENGTH32 = 8;
+
+		public static string gid = "f73cbc3b - 1dd3-48db-b2c0-e26802436091";
+
+		public bool isZero = false;
+		public bool isNAN = false;
+
 		private void Init()
 		{
 			floatVal_ = EMPTYNUM;
@@ -53,38 +59,61 @@ namespace fpOperations
 
 		public void Dump(string msg)
 		{
-			Debug.WriteLine("==========================================================");
-			Debug.WriteLine("DUMP " + msg);
-			Debug.WriteLine("use https://www.h-schmidt.net/FloatConverter/IEEE754.html to check\n");
+			if ((isZero == true) || (isNAN == true))
+			{
+				Debug.WriteLine("bit string  = " + ieee32BitString_);
+				Debug.WriteLine("is zero     = {0} ", isZero);
+				Debug.WriteLine("is NAN      = {0} ", isNAN);
+			}
+			else
+			{
+				Debug.WriteLine("==========================================================");
+				Debug.WriteLine("DUMP " + msg);
+				Debug.WriteLine("use https://www.h-schmidt.net/FloatConverter/IEEE754.html to check\n");
 
-			Debug.WriteLine("floatVal_         = {0} ", floatVal_);
-			Debug.WriteLine("decimalVal_       = {0} ", decimalVal_);
-			Debug.WriteLine("encodedHexString_ = " + encodedHexString_);
-			Debug.WriteLine("ieee32String      = " + ieee32BitString_);
-			Debug.WriteLine("encodedSign_      = {0} ", encodedSign_);
-			Debug.WriteLine("encodedExponent_  = {0} ", encodedExponent_);
-			Debug.WriteLine("encodedMantissa_  = {0} ", encodedMantissa_);
-			Debug.WriteLine("decodedSign_      = {0} ", decodedSign_);
-			Debug.WriteLine("decodedExponent_  = [{0}] 2^[{1}] = {2}", decodedExponent_, decodedExponent_, Math.Pow(2, decodedExponent_));
-			Debug.WriteLine("decodedMantissa_  = {0} ", decodedMantissa_);
+				Debug.WriteLine("floatVal_         = {0} ", floatVal_);
+				Debug.WriteLine("decimalVal_       = {0} ", decimalVal_);
+				Debug.WriteLine("encodedHexString_ = " + encodedHexString_);
+				Debug.WriteLine("ieee32String      = " + ieee32BitString_);
+				Debug.WriteLine("encodedSign_      = {0} ", encodedSign_);
+				Debug.WriteLine("encodedExponent_  = {0} ", encodedExponent_);
+				Debug.WriteLine("encodedMantissa_  = {0} ", encodedMantissa_);
+				Debug.WriteLine("decodedSign_      = {0} ", decodedSign_);
+				Debug.WriteLine("decodedExponent_  = [{0}] 2^[{1}] = {2}", decodedExponent_, decodedExponent_, Math.Pow(2, decodedExponent_));
+				Debug.WriteLine("decodedMantissa_  = {0} ", decodedMantissa_);
+			}
+
+
 		}
 
 		public string Dump2(string msg)
 		{
-			string s1 = "==========================================================" + Environment.NewLine;
-			s1 += (msg) + Environment.NewLine;
-			s1 += "==========================================================" + Environment.NewLine;
-			s1 += string.Format("floatVal_         = {0} ", floatVal_) + Environment.NewLine;
-			s1 += string.Format("decimalVal_       = {0} ", decimalVal_) + Environment.NewLine;
-			s1 += string.Format("encodedHexString_ = " + encodedHexString_) + Environment.NewLine;
-			s1 += string.Format("ieee32String      = " + ieee32BitString_) + Environment.NewLine;
-			s1 += string.Format("encodedSign_      = {0} ", encodedSign_) + Environment.NewLine;
-			s1 += string.Format("encodedExponent_  = {0} ", encodedExponent_) + Environment.NewLine;
-			s1 += string.Format("encodedMantissa_  = {0} ", encodedMantissa_) + Environment.NewLine;
-			s1 += string.Format("decodedSign_      = {0} ", decodedSign_) + Environment.NewLine;
-			s1 += string.Format("decodedExponent_  = [{0}] 2^[{1}] = {2}", decodedExponent_, decodedExponent_, Math.Pow(2, decodedExponent_)) + Environment.NewLine;
-			s1 += string.Format("decodedMantissa_  = {0} ", decodedMantissa_) + Environment.NewLine;
-
+			string s1 = "";
+			if ((isZero == true) || (isNAN == true))
+			{
+				s1 = "==========================================================" + Environment.NewLine;
+				s1 += "["+ (msg) + "]" + Environment.NewLine + Environment.NewLine;
+				//s1 += "==========================================================" + Environment.NewLine;
+				s1 += "IEEE bit string  = " + ieee32BitString_ + Environment.NewLine;
+				s1 += "is zero     = " + isZero + Environment.NewLine;
+				s1 += "is NAN      = " + isNAN + Environment.NewLine;
+			}
+			else
+			{
+				s1 = "==========================================================" + Environment.NewLine;
+				s1 += "[" + (msg) + "]" + Environment.NewLine + Environment.NewLine;
+				//s1 += "==========================================================" + Environment.NewLine;
+				//s1 += string.Format("floatVal_         = {0} ", floatVal_) + Environment.NewLine;
+				s1 += string.Format("decimal                = {0} ", decimalVal_) + Environment.NewLine;
+				s1 += string.Format("IEEE hex               = " + encodedHexString_) + Environment.NewLine;
+				s1 += string.Format("IEEE bit String        = " + ieee32BitString_) + Environment.NewLine;
+				s1 += string.Format("IEEE encoded Sign      = {0} ", returnSignStr32()) + Environment.NewLine;
+				s1 += string.Format("IEEE encoded Exponent  = {0} ", returnExponentStr32()) + Environment.NewLine;
+				s1 += string.Format("IEEE encoded Mantissa  = {0} ", returnMantissaStr32()) + Environment.NewLine;
+				//s1 += string.Format("sign value             = {0} ", decodedSign_) + Environment.NewLine;
+				//s1 += string.Format("exponent value         = [{0}]  =>  2^[{1}] = {2}", decodedExponent_, decodedExponent_, Math.Pow(2, decodedExponent_)) + Environment.NewLine;
+				//s1 += string.Format("mantissa value         = {0} ", decodedMantissa_) + Environment.NewLine;
+			}
 			return s1;
 		}
 
@@ -110,6 +139,13 @@ namespace fpOperations
 			encodedExponent_ = Convert.ToInt32(expStr32, 2);
 			encodedMantissa_ = Convert.ToInt32(mantissaStr32, 2);
 
+			if (checkIsNAN_IEEE_Bin(expStr32, mantissaStr32))
+				isNAN = true;
+			if (checkIsZero_IEEE_Bin(expStr32, mantissaStr32))
+				isZero = true;
+			if ((isNAN == true) || (isZero == true))
+				return;
+
 			// decode sign bit, exponent
 			decodedSign_ = (encodedSign_ > 0) ? -1 : 1;
 			decodedExponent_ = encodedExponent_ - BIAS32;
@@ -132,6 +168,13 @@ namespace fpOperations
 			Init();
 			ieee32BitString_ = signBitStr + expBitsStr + mantissaBitsStr;
 
+			if (checkIsNAN_IEEE_Bin(expBitsStr, mantissaBitsStr))
+				isNAN = true;
+			if (checkIsZero_IEEE_Bin(expBitsStr, mantissaBitsStr))
+				isZero = true;
+			if ((isNAN == true) || (isZero == true))
+				return;
+				
 			encodedSign_ = Convert.ToInt32(signBitStr, 2);
 			encodedExponent_ = Convert.ToInt32(expBitsStr, 2);
 			encodedMantissa_ = Convert.ToInt32(mantissaBitsStr, 2);
@@ -170,6 +213,37 @@ namespace fpOperations
 			Array.Reverse(byteArray);
 			encodedHexString_ = BitConverter.ToString(byteArray).Replace("-", "");
 		}
+
+		// Exponent values of all ones are used to represent special values: infinity and NaN (Not a Number). Zero is represented with an exponent and mantissa of all zeros.
+		// http://www.fredosaurus.com/notes-java/data/basic_types/numbers-floatingpoint/ieee754.html
+		public bool checkIsZero_IEEE_Bin(string expStr, string mantStr)
+		{
+			if (allCharactersSame(expStr, '0') && allCharactersSame(mantStr, '0'))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public bool checkIsNAN_IEEE_Bin(string expStr, string mantStr)
+		{
+			// exponent all 1's, non-zero mantissa
+			if (allCharactersSame(expStr, '1') && (!allCharactersSame(mantStr, '0')))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		private bool allCharactersSame(string str1, char ch1)
+		{
+			int n = str1.Length;
+			for (int i = 1; i < n; i++)
+				if ((str1[i] != str1[0]) || (str1[i] != ch1))
+					return false;
+			return true;
+		}
+
 
 		public string returnSignStr32()
 		{

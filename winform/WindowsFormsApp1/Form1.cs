@@ -231,6 +231,11 @@ namespace WindowsFormsApp1
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
 
+            btn00.Enabled = false;
+            btn01.Enabled = false;
+            btn000.Enabled = false;
+            btn111.Enabled = false;
+
             lblOp1Len.Text = "";
             lblOp1Len.Visible = false;
             label6.Visible = false;
@@ -273,6 +278,11 @@ namespace WindowsFormsApp1
             btnDot.Enabled = false;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
+
+            btn00.Enabled = false;
+            btn01.Enabled = false;
+            btn000.Enabled = false;
+            btn111.Enabled = false;
 
             lblOp1Len.Text = "";
             lblOp1Len.Visible = true;
@@ -318,6 +328,11 @@ namespace WindowsFormsApp1
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
             btnNeg.Enabled = false;
+
+            btn00.Enabled = false;
+            btn01.Enabled = false;
+            btn000.Enabled = false;
+            btn111.Enabled = false;
 
             lblOp1Len.Text = "";
             lblOp1Len.Visible = true;
@@ -385,21 +400,11 @@ namespace WindowsFormsApp1
         {
             txtOperand1.Text = "0";
             txtOperand2.Text = "0";
-
             txtResult.Text = "";
-
             lblOp1Len.Text = "";
-            //lblOp1Len.Visible = false;
-            //label6.Visible = false;
             lblOp1Limit.Text = "";
-            //lblOp1Limit.Visible = false;
-
             lblOp2Len.Text = "";
-            //lblOp2Len.Visible = false;
-            //label7.Visible = false;
             lblOp2Limit.Text = "";
-            //lblOp2Limit.Visible = false;
-
             txtAllResults.Text = "";
         }
 
@@ -408,13 +413,7 @@ namespace WindowsFormsApp1
             string s1 = txtOperand1.Text;
             if (s1 != ".")  // if number string is just starting with "." it will break Decimal.Parse
             {
-                //decimal d1 = Decimal.Parse(s1);
-
-                //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
-
-
             }
-
 
             if (rdoDec.Checked)
             {
@@ -437,10 +436,6 @@ namespace WindowsFormsApp1
             string s1 = txtOperand2.Text;
             if (s1 != ".")  // if number string is just starting with "." it will break Decimal.Parse
             {
-                //decimal d1 = Decimal.Parse(s1);
-
-                //fpOperations.Standard754FPNumber fpn = new fpOperations.Standard754FPNumber((float)d1);
-
             }
 
             if (rdoDec.Checked)
@@ -461,26 +456,24 @@ namespace WindowsFormsApp1
 
         private void txtOperand1_Enter(object sender, EventArgs e)
         {
-            txtOperand1.BackColor = Color.Cornsilk;
+            txtOperand1.BackColor = Color.Orange;
             txtOperand2.BackColor = Color.White;
         }
 
         private void txtOperand1_Leave(object sender, EventArgs e)
         {
             gWhichOpHasFocus = (int)OpFocus.OPERAND1;
-            //txtOperand1.BackColor = Color.White;
         }
 
         private void txtOperand2_Enter(object sender, EventArgs e)
         {
             gWhichOpHasFocus = (int)OpFocus.OPERAND2;
-            txtOperand2.BackColor = Color.Cornsilk;
+            txtOperand2.BackColor = Color.Orange;
             txtOperand1.BackColor = Color.White;
         }
 
         private void txtOperand2_Leave(object sender, EventArgs e)
         {
-            //txtOperand2.BackColor = Color.White;
         }
 
         private void btnMult_Click(object sender, EventArgs e)
@@ -499,10 +492,6 @@ namespace WindowsFormsApp1
                 fpOperations.Standard754FPNumber fpn2 = new fpOperations.Standard754FPNumber((float)d2);
 
                 fpOperations.Standard754FPNumber fpn3 = fpn2 * fpn1;
-
-                //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                //txtResultHex.Text = fpn3.returnEncodedHexString();
-                //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
 
                 txtResult.Text = "";
 
@@ -526,10 +515,6 @@ namespace WindowsFormsApp1
                 fpOperations.Standard754FPNumber fpn2 = new fpOperations.Standard754FPNumber((float)d2);
                 fpOperations.Standard754FPNumber fpn3 = fpn1 - fpn2;
 
-                //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                //txtResultHex.Text = fpn3.returnEncodedHexString();
-                //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
-
                 txtResult.Text = "";
 
             }
@@ -551,10 +536,6 @@ namespace WindowsFormsApp1
 
                 fpOperations.Standard754FPNumber fpn2 = new fpOperations.Standard754FPNumber((float)d2);
                 fpOperations.Standard754FPNumber fpn3 = fpn2 + fpn1;
-
-                //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                //txtResultHex.Text = fpn3.returnEncodedHexString();
-                //txtResultBin.Text = fpn3.returnSignStr32() + "  " + fpn3.returnExponentStr32() + "  " + fpn3.returnMantissaStr32();
 
                 txtResult.Text = "";
             }
@@ -721,6 +702,9 @@ namespace WindowsFormsApp1
             string str1 = "";
             string str2 = "";
 
+            bool isNANtmp = false;
+            bool isZerotmp = false;
+
             // ---------------------------------------------------
             // starting with unencoded hex 
             // simply add/subtract/multiply the unencoded numbers
@@ -743,7 +727,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = ival3.ToString("X");
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
                 }
                 else if (cbOperation.SelectedIndex == 1)  // -
                 {
@@ -751,7 +735,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = ival3.ToString("X");
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
                 }
                 else if (cbOperation.SelectedIndex == 0)  // *
                 {
@@ -759,7 +743,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = ival3.ToString("X");
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
                 }
 
                 // unencoded hex and bin were added late, original processing for IEEE 754 calculations would fall through, we want to skip that original processing
@@ -787,7 +771,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = Convert.ToString(ival3, 2);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
                 }
                 else if (cbOperation.SelectedIndex == 1)  // -
                 {
@@ -795,7 +779,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = Convert.ToString(ival3, 2);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
                 }
                 else if (cbOperation.SelectedIndex == 0)  // *
                 {
@@ -803,7 +787,7 @@ namespace WindowsFormsApp1
                     fpOperations.Standard754FPNumber fpn3 = new fpOperations.Standard754FPNumber((float)ival3);
 
                     txtResult.Text = Convert.ToString(ival3, 2);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
+                    txtAllResults.Text = fpn1.Dump2("operand 1") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
                 }
 
                 // unencoded hex and bin were added late, original processing for IEEE 754 calculations would fall through, we want to skip that original processing
@@ -885,7 +869,19 @@ namespace WindowsFormsApp1
                     string mantStr = txtOperand1.Text.Substring(9, 23);
 
                     fpOperations.Standard754FPNumber fp = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
-                    str1 = fp.returnFloatVal().ToString();
+
+                    if (fp.isNAN == true)
+                    {
+                        isNANtmp = true;
+                        txtAllResults.Text = fp.Dump2("operand 11");
+                    }
+                    if (fp.isZero == true)
+                    {
+                        isZerotmp = true;
+                        txtAllResults.Text = fp.Dump2("operand 11");
+                    } 
+                    if(!(fp.isNAN || fp.isZero))
+                        str1 = fp.returnFloatVal().ToString();
                 }
 
                 // check bin operand 2 length
@@ -902,7 +898,19 @@ namespace WindowsFormsApp1
                     string mantStr = txtOperand2.Text.Substring(9, 23);
 
                     fpOperations.Standard754FPNumber fp = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
-                    str2 = fp.returnFloatVal().ToString();
+
+                    if (fp.isNAN == true)
+                    {
+                        isNANtmp = true;
+                        txtAllResults.Text += fp.Dump2("operand 22");
+                    }
+                    if (fp.isZero == true)
+                    {
+                        isZerotmp = true;
+                        txtAllResults.Text += fp.Dump2("operand 22");
+                    }
+                    if (!(fp.isNAN || fp.isZero))
+                        str2 = fp.returnFloatVal().ToString();
                 }
 
                 if (errStr1.Length > 0)
@@ -910,12 +918,15 @@ namespace WindowsFormsApp1
                     txtAllResults.Text += errStr1;
                     return;
                 }
+
+                if (isNANtmp || isZerotmp)
+                    return;
             }
 
             // ---------------------------------------------------
             // this was original IEEE 754 calculation before new requirements
             // this accommodated dec, IEEE bin, IEEE hex, but not unencoded hex and bin
-            // str1, str2 need to start as a decimal here, but are not due to time constraints
+            // str1, str2 need to start as a decimal here, but they are not due to time constraints
             // ---------------------------------------------------
             if ((str1 != ".") && (str2 != ".")) // if number string is just starting with "." it will break Decimal.Parse
             {
@@ -936,29 +947,20 @@ namespace WindowsFormsApp1
                 if (cbOperation.SelectedIndex == 2)  //+
                 {
                     fpn3 = fpn1 + fpn2;
-
-                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("addition result");
                     txtAllResults.Text = "Addition" + Environment.NewLine;
                 }
                 else if (cbOperation.SelectedIndex == 1)  // -
                 {
                     fpn3 = fpn1 - fpn2;
-
-                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("subtraction result");
                     txtAllResults.Text = "Subtraction" + Environment.NewLine;
                 }
                 else if (cbOperation.SelectedIndex == 0)  // *
                 {
                     fpn3 = fpn1 * fpn2;
-
-                    //txtResult.Text = fpn3.returnDecimalVal().ToString();
-                    //txtAllResults.Text = fpn1.Dump2("operand 1:") + "\n\n" + fpn2.Dump2("operand 2") + "\n\n" + fpn3.Dump2("multiplication result");
                     txtAllResults.Text = "Multiplication" + Environment.NewLine;
                 }
 
-                if(rdoDec.Checked)
+                if (rdoDec.Checked)
                 {
                     txtResult.Text = fpn3.returnDecimalVal().ToString();
                 }
@@ -969,12 +971,12 @@ namespace WindowsFormsApp1
                 else if (rdoBin.Checked)
                 {
                     txtResult.Text = fpn3.returnSignStr32().ToString() +
-                                    fpn3.returnExponentStr32().ToString() +
-                                    fpn3.returnMantissaStr32().ToString();
+                                        fpn3.returnExponentStr32().ToString() +
+                                        fpn3.returnMantissaStr32().ToString();
                 }
                 txtAllResults.Text = fpn1.Dump2("operand 1") + Environment.NewLine + fpn2.Dump2("operand 2") + Environment.NewLine + fpn3.Dump2("result"); ;
+            }
 
-            } 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1003,7 +1005,7 @@ namespace WindowsFormsApp1
                     decimal d1 = Decimal.Parse(s1);
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)d1);
                     txtAllResults.Text += "";
-                    txtAllResults.Text = fpn1.Dump2("viewing operand 1:" + s1);
+                    txtAllResults.Text = fpn1.Dump2("operand 1");
                 }
             }
 
@@ -1021,7 +1023,7 @@ namespace WindowsFormsApp1
                 {
                     float tempFl = fpOperations.Standard754FPNumber.HexStringToFloat(txtOperand1.Text);
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(tempFl);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
+                    txtAllResults.Text = fpn1.Dump2("operand 1");
                 }
 
                 if (errStr1.Length > 0)
@@ -1049,7 +1051,7 @@ namespace WindowsFormsApp1
                     string mantStr = txtOperand1.Text.Substring(9, 23);
 
                     fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber(signStr, expStr, mantStr);
-                    txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
+                    txtAllResults.Text = fpn1.Dump2("operand 1");
 
                 }
                 if (errStr1.Length > 0)
@@ -1066,7 +1068,7 @@ namespace WindowsFormsApp1
             {
                 int ival1 = int.Parse(txtOperand1.Text, System.Globalization.NumberStyles.HexNumber);
                 fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
-                txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
+                txtAllResults.Text = fpn1.Dump2("operand 1");
             }
             // ---------------------------------------------------
             // view unencoded bin 
@@ -1075,7 +1077,7 @@ namespace WindowsFormsApp1
             {
                 int ival1 = Convert.ToInt32(txtOperand1.Text, 2);
                 fpOperations.Standard754FPNumber fpn1 = new fpOperations.Standard754FPNumber((float)ival1);
-                txtAllResults.Text = fpn1.Dump2("operand 1:" + txtOperand1.Text);
+                txtAllResults.Text = fpn1.Dump2("operand 1");
             }
         }
 
@@ -1113,6 +1115,11 @@ namespace WindowsFormsApp1
             btnDot.Enabled = false;
             btnBackSpace.Enabled = true;
             btnClear.Enabled = true;
+
+            btn00.Enabled = false;
+            btn01.Enabled = false;
+            btn000.Enabled = false;
+            btn111.Enabled = false;
 
             lblOp1Len.Text = "";
             lblOp1Len.Visible = false;
@@ -1158,6 +1165,11 @@ namespace WindowsFormsApp1
             btnClear.Enabled = true;
             btnNeg.Enabled = false;
 
+            btn00.Enabled = false;
+            btn01.Enabled = false;
+            btn000.Enabled = false;
+            btn111.Enabled = false;
+
             lblOp1Len.Text = "";
             lblOp1Len.Visible = false;
             label6.Visible = false;
@@ -1178,88 +1190,147 @@ namespace WindowsFormsApp1
 
         private void btnRunTest_Click(object sender, EventArgs e)
         {
-            if(rdoTest1.Checked)
+            txtOperand1.Text = "0";
+            txtOperand2.Text = "0";
+            txtResult.Text = "";
+            lblOp1Len.Text = "";
+            lblOp1Limit.Text = "";
+            lblOp2Len.Text = "";
+            lblOp2Limit.Text = "";
+            txtAllResults.Text = "";
+
+            if (cbTest1.SelectedIndex == 1)
             {
                 // dec
                 rdoDec.Checked = true;
                 txtOperand1.Text = "100";
                 txtOperand2.Text = "20";
             }
-            else if (rdoTest2.Checked)
+            else if (cbTest1.SelectedIndex == 2)
             {
                 // hex unenc
                 rdoHexUnenc.Checked = true;
                 txtOperand1.Text = "3E8";  // 1000
                 txtOperand2.Text = "20";   // 14
-                lblTestData.Text = "1000 / 14";
              }
-            else if (rdoTest3.Checked)
+            else if (cbTest1.SelectedIndex == 3)
             {
                 // bin unenc
                 rdoBinUnenc.Checked = true;
                 txtOperand1.Text = "11111010000"; // 2000
                 txtOperand2.Text = "11001000";  // 200
-                lblTestData.Text = "12000 / 20";
-            }
-            else if (rdoTest4.Checked)
+           }
+            else if (cbTest1.SelectedIndex == 4)
             {
                 // IEEE hex
                 rdoHex.Checked = true;
                 txtOperand1.Text = "42c80000";  // 100
                 txtOperand2.Text = "43480000";  // 200
-                lblTestData.Text = "100 / 200";
             }
-            else if (rdoTest5.Checked)
+            else if (cbTest1.SelectedIndex == 5)
             {
                 // IEEE 754 bin
                 rdoBin.Checked = true;
                 txtOperand1.Text = "01000011010010000000000000000000";  // 200
                 txtOperand2.Text = "01000011100101100000000000000000";  // 300
-                lblTestData.Text = "200 / 300";
             }
-            else if (rdoTest6.Checked)
+            else if (cbTest1.SelectedIndex == 6)
             {
                 // dec unenc
                 rdoDec.Checked = true;
                 txtOperand1.Text = "4000";
                 txtOperand2.Text = "2";
-                lblTestData.Text = "4000 / 2";
             }
-            else if (rdoTest7.Checked)
+            else if (cbTest1.SelectedIndex == 7)
             {
                 // hex unenc
                 rdoHexUnenc.Checked = true;
                 txtOperand1.Text = "37";  //55 
                 txtOperand2.Text = "3039"; // 12345
-                lblTestData.Text = "37 / 3039";
             }
-            else if (rdoTest8.Checked)
+            else if (cbTest1.SelectedIndex == 8)
             {
                 // bin unenc
                 rdoBinUnenc.Checked = true;
                 txtOperand1.Text = "101100";  // 44
                 txtOperand2.Text = "1001110001000";  // 5000
-                lblTestData.Text = "44 / 5000";
             }
-            else if (rdoTest9.Checked)
+            else if (cbTest1.SelectedIndex == 9)
             {
                 // IEEE hex
                 rdoHex.Checked = true;
                 txtOperand1.Text = "4640e400";  // 12345
                 txtOperand2.Text = "45d42800";  // 6789
-                lblTestData.Text = "12345 / 6789";
             }
-            else if (rdoTest10.Checked)
+            else if (cbTest1.SelectedIndex == 10)
             {
                 // IEEE 754 bin
                 rdoBin.Checked = true;
                 txtOperand1.Text = "01000110010000001110010000000000";  // 12345
                 txtOperand2.Text = "01000101110101000010100000000000";  // 6789
-                lblTestData.Text = "12345 / 6789";
+            }
+
+            else if (cbTest1.SelectedIndex == 11)
+            {
+                // IEEE 0
+                rdoBin.Checked = true;
+                txtOperand1.Text = "00000000000000000000000000000000";  // 0
+                txtOperand2.Text = "00000000000000000000000000000000";  // 0
+            }
+            else if (cbTest1.SelectedIndex == 12)
+            {
+                // IEEE 0
+                rdoBin.Checked = true;
+                txtOperand1.Text = "10000000000000000000000000000000";  // 0
+                txtOperand2.Text = "10000000000000000000000000000000";  // 0
+            }
+            else if (cbTest1.SelectedIndex == 13)
+            {
+                // IEEE 754 NAN
+                rdoBin.Checked = true;
+                txtOperand1.Text = "01111111100000000000000000000001";  // NAN
+                txtOperand2.Text = "01111111100000000000000000000001";  // NAN
+            }
+            else if (cbTest1.SelectedIndex == 14)
+            {
+                // IEEE 754 NAN
+                rdoBin.Checked = true;
+                txtOperand1.Text = "01111111100000000000000000000001";  // NAN
+                txtOperand2.Text = "01111111100000000000000000000010";  // NAN
             }
         }
 
         private void rdoTest1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            //appendOperand("01");
+        }
+
+        private void btn00_Click(object sender, EventArgs e)
+        {
+            //appendOperand("00");
+        }
+
+        private void btn111_Click(object sender, EventArgs e)
+        {
+            //appendOperand("111");
+        }
+
+        private void btn000_Click(object sender, EventArgs e)
+        {
+            //appendOperand("000");
+        }
+
+        private void cbTest1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
